@@ -1,7 +1,7 @@
 <template>
     <div id="Warn">
         <div class="basic_head">
-                <div class="arrow" @click="fn">&laquo;</div>
+                <div class="arrow" @click="Last_step">&laquo;</div>
                 <div class="head_cont">
                     转账
                 </div>
@@ -10,22 +10,24 @@
             <ul>
                 <li>
                     <span>收钱人钱包地址</span>
+                    <input type="text" v-model="Warn.walletAddress">
                 </li>
                 <li>
                     <span>数量</span>
-                    <input type="text" placeholder="可用余额0.0000SLK">
+                    <input type="text" :placeholder="slk_x" v-model="Warn.num">
                 </li>
                 <li>
                     <span>备注</span>
-                    <input type="text">
+                    <input type="text" v-model="Warn.remark">
                 </li>
                 <li>
                     <span>手续费</span>
+                    <input type="text" v-model="Warn.serviceMoney">
                 </li>
             </ul>
         </div>
         <div class="next_step_footer">
-             <button>
+             <button @click="Warn_fn">
                  确认转账
              </button>
          </div>
@@ -33,16 +35,39 @@
 </template>
 
 <script>
+import {mapState,mapGetters,mapActions,mapMutations} from 'vuex'
     export default {
         data(){
             return {
-
+                Warn:{
+                    uid:'',
+                    walletAddress:'',
+                    num:'',
+                    remark:"",
+                    serviceMoney:0,
+                   
+                }
+               
             }
         },
+        created(){
+            this.Warn.uid=this.uid
+        },
+        computed:{
+             ...mapState(['uid','slk_x']),
+        },
         methods:{
-             fn(){
+            ...mapMutations(['Wallet_fn']),
+            Last_step(){
                  this.$router.go(-1)
             },
+            Warn_fn(){
+                this.$http.post('http://192.168.1.109:3000/v1/users/transfer',this.Warn).then(res=>{
+                     console.log(res.data)
+                    // this.Wallet_fn(res.data.data.slk)
+                   
+                })
+            }
         }
     }
 </script>
@@ -73,12 +98,12 @@
                 float: left;
             }
             input{
-                float: left;
+                float: right;
                 overflow: hidden;
                 border: none;
                 width: 300px;
                 height: 80px;
-                margin-left: 300px;
+                margin-left: 200px;
             }
         }
     }

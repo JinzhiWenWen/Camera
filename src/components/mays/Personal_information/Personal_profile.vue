@@ -10,35 +10,31 @@
                 </div>
         </div>
         <div>
-            <textarea name="" id="" cols="30" rows="10" class="text" v-model="intro"></textarea>
+            <textarea name="" id="" cols="30" rows="10" class="text" v-model="Personal_inf_x.intro"></textarea>
         </div>
     </div>
 </template>
 
 <script>
+import {mapState,mapGetters,mapActions,mapMutations} from 'vuex'
     export default {
          data(){
             return {
-                 uid:"5b8a5ab830c9c562f96c7f9e",
-                 Personal_inf:'',
-                 intro:''
             }
         },
         created(){
-            this.Personal_inf=this.$route.query.Personal_inf;
-            this.intro=this.Personal_inf.intro;
+         
+        },
+        computed:{
+             ...mapState(['Personal_inf_x']),
         },
         methods:{
+            ...mapActions(['Personal_profile_fn_x']),
             Last_step(){
                  this.$router.go(-1)
             },
             preservation_fn(){
-                this.$http.post('http://192.168.1.109:3000/v1/users/amend/intro',{
-                       uid:this.uid,
-                       intro:this.intro
-                }).then(res=>{
-                    console.log(res)
-                })
+                this.Personal_profile_fn_x(this.Personal_inf_x.intro)
                 this.$router.go(-1)
             },
         }

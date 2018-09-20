@@ -8,7 +8,7 @@
         </div>
         <div class="Wallet_head">
             <div class="Wallet_more">
-                {{slk}}SLK
+                {{slk_x}}SLK
                 <b @click="Detailed_fn">明细</b>
             </div>
             <div class="Wallet_ul">
@@ -22,7 +22,7 @@
              <ul>
                  <li v-for="(item,index) in arr2" :key="index">
                      <span>{{item.name}}</span>
-                     <i @click="fn2(index)">></i>
+                     <i @click="router_fn(index)">></i>
                  </li>
              </ul>
         </div>
@@ -30,10 +30,11 @@
 </template>
 
 <script>
+import {mapState,mapGetters,mapActions,mapMutations} from 'vuex'
     export default {
+        
         data (){
             return {
-                slk:'',
                 uid:"5b8a5ab830c9c562f96c7f9e",
                 arr:[
                     {
@@ -51,7 +52,7 @@
                 ],
                 arr2:[
                     {
-                        "name":"提币",
+                        "name":"转账",
                         "router":"/Warn",
                     },
                     {
@@ -66,25 +67,28 @@
             }
         },
         created(){
-            this.wallet_fn();
+            this.wallet_fn_v();
+        },
+        computed:{
+             ...mapState(['slk_x']),
         },
         methods:{
+            ...mapMutations(['Wallet_fn']),
            Last_step(){
                  this.$router.go(-1)
             },
-            fn2(i){
+            router_fn(i){
                 this.$router.push({
                     path:this.arr2[i].router,
                     query:{
-                        id:1
+                        uid:this.uid
                     }
                 })
             },
-            wallet_fn(){
+            wallet_fn_v(){
                 this.$http.get('http://192.168.1.109:3000/v1/users/wallet/balance/'+this.uid).then(res=>{
-                    console.log(res)
-                    this.slk=res.data.data[0].slk
-                    console.log(this.slk)
+                    this.Wallet_fn(res.data.data[0].slk)
+                    console.log(res.data.data[0].slk)
                 })
             },
             Detailed_fn(){

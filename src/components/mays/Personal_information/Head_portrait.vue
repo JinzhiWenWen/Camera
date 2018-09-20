@@ -10,57 +10,62 @@
                 </div>
         </div>
         <div>
-            <div class="item_bock head_p">
-                <div class="head_img">
-                    <img :src="this.avatar"/>
-                </div>
-                <div class="setting_right" @click.stop="uploadHeadImg">
-                       <div class="caption">更改头像</div>
-                </div>
-                <input type="file" accept="image/*" @change="handleFile" class="hiddenInput"/>
-            </div>
+                <el-upload
+                class="avatar-uploader"
+                action="https://jsonplaceholder.typicode.com/posts/"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload">
+                <img v-if="imageUrl" :src="Personal_inf_x.avatar" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                </el-upload>
         </div>
     </div>
 </template>
 
 <script>
+import {mapState,mapGetters,mapActions,mapMutations} from 'vuex'
     export default {
          data(){
             return {
-                  avatar: 'https://gss0.bdstatic.com/-4o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=62d46c39067b020818c437b303b099b6/d4628535e5dde7119c3d076aabefce1b9c1661ba.jpg'
+                  uid:'5b8a5ab830c9c562f96c7f9e',
+                  avatar:'',
+                  imageUrl: ''
             } 
         },
+        created(){
+            console.log(this.Personal_inf_x)
+        },
+        computed:{
+             ...mapState(['Personal_inf_x']),
+        },
         methods:{
+            ...mapActions(['preservation_fn_x','Personal_inf_fn_x']),
             Last_step(){
                  this.$router.go(-1)
             },
-            preservation_fn(){
-                // this.$http.get('').then(res=>{
-                //     console.log(res)
-                // })
-                // this.$router.go(-1)
+            preservation_fn(){//保存头像
+                this.preservation_fn_x(this.Personal_inf_x.avatar);
+                this.$router.go(-1)
             },
-            // 打开图片上传
-            uploadHeadImg: function () {
-                this.$el.querySelector('.hiddenInput').click()
+            handleAvatarSuccess(res, file) {
+                this.Personal_inf_x.avatar = URL.createObjectURL(file.raw);
             },
-            // 将头像显示
-            handleFile: function (e) {
-                let $target = e.target || e.srcElement
-                let file = $target.files[0]
-                let reader = new FileReader()
-                reader.onload = (data2) => {
-                    let res = data2.target || data2.srcElement
-                    this.avatar = res.result;
-                        console.log('第一步')
-                    this.$http.post('https://easy-mock.com/mock/5b95d4bd8190510e014e3f45/123/img',{
-                        img2:this.avatar
-                    }).then(res => {
-                        console.log(res.config.data)
-                    })
-                }               
-                reader.readAsDataURL(file)
-            },
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg';
+                const isGIF = file.type === 'image/gif';
+                const isPNG = file.type === 'image/png';
+                const isBMP = file.type === 'image/bmp';
+                const isLt2M = file.size / 1024 / 1024 < 2;
+
+                if (!isJPG && !isGIF && !isPNG && !isBMP) {
+                    this.common.errorTip('上传图片必须是JPG/GIF/PNG/BMP 格式!');
+                }
+                if (!isLt2M) {
+                    this.$message.error('上传头像图片大小不能超过 2MB!');
+                }
+                return (isJPG || isBMP || isGIF || isPNG) && isLt2M;
+            }
         }
     }
 </script>
@@ -123,4 +128,27 @@
   font-size: 26px;
   height: 37px;
 }
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
 </style>

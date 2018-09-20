@@ -69,7 +69,8 @@
                   this.$router.push({
                     path:this.arr[i].router,
                     query:{
-                        id:1
+                        id:1,
+                        ifShow:true
                     }
                 })
             }

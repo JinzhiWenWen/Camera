@@ -24,25 +24,32 @@
                                 
                             </div>
                             <div class="li_div_bottom">
-                                <div v-if="item2.cont_chakan">
-                                       {{item2.cont_chakan}}
+                                <div v-if="item2.status ==0">
+                                       查看详情
                                 </div>
-                                <div v-if="item2.cont_bianji">
-                                    {{item2.cont_bianji}}
+                                <div v-if="item2.status ==1">
+                                    编辑
                                 </div>
-                                <div v-if="item2.diya">
-                                    <span @click="mortgage_fn(item2.aid)">
-                                        {{item2.diya.cont_diya}}
+                                <div v-if="item2.status ==2">
+                                    <span @click="mortgage_fn(item2._id)">
+                                        抵押
                                     </span>
-                                    <span @click="Toexamine_fn(item2.aid)">
-                                        {{item2.diya.cont_shenhe}}
+                                    <span @click="Toexamine_fn(item2._id)">
+                                        审核报名信息
                                     </span>
                                 </div>
-                                <div v-if="item2.cont_diya">
-                                    {{item2.cont_diya}}
+                                <div v-if="item2.status ==3">
+                                    执行中
+                                </div>
+                                <div v-if="item2.status ==4">
+                                    评价中
+                                </div>
+                                <div v-if="item2.status ==5">
+                                    已完成
                                 </div>
                             </div>
-                            <i>{{item2.cont_zhuangtai}}</i>
+                            <i>{{item2.status | discount}}</i>
+                            <i v-if="item2.cont_zhuangtai">{{item2.cont_zhuangtai}}</i>
                         </div>
                     </div>
                  </li>
@@ -61,57 +68,57 @@
                         "name":"我发起的",
                         "router":"",
                         "content":[
-                            {
-                                "title":"照亮慈姑堂",
-                                "cont_ji":"A级",
-                                "cont_du":"300",
-                                "activityNo":"2018/08/23/00:01",
-                                "cont_zhuangtai":"筹备中",
-                                "cont_chakan":"查看详情"
-                            },
-                            {
-                                "title":"照亮慈姑堂",
-                                "cont_ji":"B级",
-                                "cont_du":"400",
-                                "activityNo":"2018/08/23/00:01",
-                                "cont_zhuangtai":"评价中",
-                                "cont_bianji":"编辑"
-                            },
-                            {
-                                "aid":"5b9608690bc5664738ea8c6e",
-                                "title":"照亮慈姑堂",
-                                "cont_ji":"A级",
-                                "cont_du":"400",
-                                "activityNo":"2018/08/23/00:01",
-                                "cont_zhuangtai":"执行中",
-                                "diya":{
-                                    "cont_diya":"抵押",
-                                    "cont_shenhe":"审核报名信息"
-                                }
-                            },
+                            // {
+                            //     "title":"照亮慈姑堂",
+                            //     "cont_ji":"A级",
+                            //     "cont_du":"300",
+                            //     "activityNo":"2018/08/23/00:01",
+                            //     "cont_zhuangtai":"筹备中",
+                            //     "cont_chakan":"查看详情"
+                            // },
+                            // {
+                            //     "title":"照亮慈姑堂",
+                            //     "cont_ji":"B级",
+                            //     "cont_du":"400",
+                            //     "activityNo":"2018/08/23/00:01",
+                            //     "cont_zhuangtai":"评价中",
+                            //     "cont_bianji":"编辑"
+                            // },
+                            // {
+                            //     "aid":"5b9608690bc5664738ea8c6e",
+                            //     "title":"照亮慈姑堂",
+                            //     "cont_ji":"A级",
+                            //     "cont_du":"400",
+                            //     "activityNo":"2018/08/23/00:01",
+                            //     "cont_zhuangtai":"执行中",
+                            //     "diya":{
+                            //         "cont_diya":"抵押",
+                            //         "cont_shenhe":"审核报名信息"
+                            //     }
+                            // },
                         ]
                     },
                     {
                         "name":"我参与的",
                         "router":"",
                          "content":[
-                            {   
-                                "aid":"",
-                                "title":"哈哈哈",
-                                "cont_ji":"B级",
-                                "cont_du":"300",
-                                "activityNo":"2018/08/23/00:01",
-                                "cont_zhuangtai":"评价中",
-                                "cont_chakan":"查看详情"
-                            },
-                            {
-                                "title":"哈哈哈2",
-                                "cont_ji":"B级",
-                                "cont_du":"400",
-                                "activityNo":"2018/08/23/00:01",
-                                "cont_zhuangtai":"筹备中",
-                                "cont_diya":"抵押"
-                            },
+                            // {   
+                            //     "aid":"",
+                            //     "title":"哈哈哈",
+                            //     "cont_ji":"B级",
+                            //     "cont_du":"300",
+                            //     "activityNo":"2018/08/23/00:01",
+                            //     "cont_zhuangtai":"评价中",
+                            //     "cont_chakan":"查看详情"
+                            // },
+                            // {
+                            //     "title":"哈哈哈2",
+                            //     "cont_ji":"B级",
+                            //     "cont_du":"400",
+                            //     "activityNo":"2018/08/23/00:01",
+                            //     "cont_zhuangtai":"筹备中",
+                            //     "cont_diya":"抵押"
+                            // },
                         ]
                     }
                 ],
@@ -140,15 +147,15 @@
             activity_class_fn(){
                 //我发起的
                 this.$http.get('http://192.168.1.109:3000/v1/users/list/started/'+this.pageNo+'/'+this.uid).then(res=>{
-                    this.arr[0].content=[...this.arr[0].content,...res.data.data]
+                    this.arr[0].content=[...this.arr[0].content,...res.data.data];
                     console.log("我发起的=》",res.data.data)
                 })
                 //我参与的
                 this.$http.get('http://192.168.1.109:3000/v1/users/list/participant/'+this.pageNo+'/'+this.uid).then(res=>{
                    this.arr[1].content=[...this.arr[1].content,...res.data.data]
-                   console.log("我参与的=》",res)
+                   console.log("我参与的=》",res.data.data)
                 })
-            },
+            },//抵押
             mortgage_fn(aid){
                 this.$router.push({
                     path:'/Mortgage',
@@ -156,7 +163,7 @@
                         aid:aid
                     }
                 })
-            },
+            },//审核
             Toexamine_fn(aid){
                 this.$router.push({
                     path:'/Registration_information',
@@ -165,7 +172,26 @@
                         uid:this.uid
                     }
                 })
-            }
+            },
+            
+        },
+        filters: {
+            //(0 审核中 1 审核失败 2 筹备中 3 执行中 4 评价中 5 已完成)
+              discount : function(value){
+                        if(value==0){
+                            return '审核中'
+                        }else if(value==1){
+                            return '审核失败'
+                        }else if(value==2){
+                            return '筹备中'
+                        }else if(value==3){
+                            return '执行中'
+                        }else if(value==4){
+                            return '评价中'
+                        }else if(value==5){
+                            return '已完成'
+                        }
+              }
         }
     }
 </script>

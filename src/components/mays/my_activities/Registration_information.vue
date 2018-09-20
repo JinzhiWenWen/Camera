@@ -127,6 +127,7 @@
             },
             Toexamine_fn(){
                 this.$http.get('http://192.168.1.109:3000/v1/activity/info/list/'+this.uid+'/'+this.aid).then(res=>{
+                
                     this.Toexamine_arr[0].personnel=res.data.data.enrollCreators;
                     this.Toexamine_arr[1].personnel=res.data.data.organizers;
                     this.Toexamine_arr[2].personnel=res.data.data.participators;

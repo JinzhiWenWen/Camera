@@ -7,7 +7,8 @@
              </div>
         </div>
         <div>
-
+            <baidu-map class="map">
+            </baidu-map>
         </div>
     </div>
 </template>
@@ -49,4 +50,8 @@
  .amap-demo {
       height: 300px;
     }
+    .map {
+  width: 100%;
+  height: 300px;
+}
 </style>

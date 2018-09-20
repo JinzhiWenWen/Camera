@@ -10,37 +10,33 @@
                 </div>
         </div>
         <div class="Nickname_ipt">
-            <input type="text" v-model="name">
+            <input type="text" v-model="Personal_inf_x.name">
         </div>
     </div>
 </template>
 
 <script>
+import {mapState,mapGetters,mapActions,mapMutations} from 'vuex'
     export default {
         data(){
             return {
-                 Personal_inf:'',
-                 uid:'5b8a5ab830c9c562f96c7f9e',
-                 name:''
+
             }
         },
          created(){
-            this.Personal_inf=this.$route.query.Personal_inf;
-            this.name=this.Personal_inf.intro;
+          console.log(this.Personal_inf_x)
+        },
+        computed:{
+             ...mapState(['Personal_inf_x']),
         },
         methods:{
+             ...mapActions(['Nickname_fn_x']),
             Last_step(){
                  this.$router.go(-1)
             },
-             preservation_fn(){
-                 console.log(this.name)
-                this.$http.post('http://192.168.1.109:3000/v1/users/amend/name',{
-                       uid:this.uid,
-                       name:this.name
-                }).then(res=>{
-                    console.log(res)
-                })
-                // this.$router.go(-1)
+            preservation_fn(){//保存昵称
+                 this.Nickname_fn_x(this.Personal_inf_x.name);
+                 this.$router.go(-1)
             },
         }
     }

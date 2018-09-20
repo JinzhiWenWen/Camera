@@ -3,7 +3,7 @@
          <div class="basic_head">
                 <div class="arrow" @click="Last_step">&laquo;</div>
                 <div class="head_cont">
-                    钱包
+                    明细
                 </div>
         </div>
         <div class="Detailed_list">

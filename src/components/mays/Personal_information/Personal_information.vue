@@ -10,17 +10,17 @@
             <div class="geren_touxiang">
                  <span>头像</span>
                 <div>
-                    <img :src="Personal_inf.avatar" alt="头像">
+                    <img :src="Personal_inf_x.avatar" alt="头像">
                 </div>
-                <i @click="fn2">></i>
+                <i @click="head_fn">></i>
             </div>
              <ul class="geren_content_ul">
                  <li v-for="(item,index) in arr" :key="index">
-                     <span>{{item.name}}</span>
-                     <div>
-                          {{item.cont}}
-                     </div>
-                     <i @click="fn3(index)">></i>
+                    <span>{{item.name}}</span>
+                     <div v-if="index==0">{{Personal_inf_x.name}}</div>
+                     <div v-if="index ==1">{{Personal_inf_x.intro}}</div>
+                     <div v-if="index ==2">信用大咖</div>
+                     <i @click="router_fn(index)">></i>
                  </li>
              </ul>
         </div>
@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import {mapState,mapGetters,mapActions,mapMutations} from 'vuex'
     export default {
          data(){
             return {
@@ -51,32 +52,38 @@
                      },
                       {
                          "name":"个人角色卡片",
-                         "cont":"",
                          "router":"/card"
                      }
                  ]
             }
         },
         created(){
-            this.Personal_inf_fn()
+            this.Personal_inf_fn_x();   
+        },
+        mounted(){
+        
+        },
+        computed:{
+             ...mapState(['Personal_inf_x']),
         },
         methods:{
+            ...mapActions(['Personal_inf_fn_x']),
             Last_step(){
                  this.$router.go(-1)
             },
-            fn2(){
+            head_fn(){
                  this.$router.push({
                     path:'/Head_portrait',
                     query:{
-                        id:1
+                        Personal_inf:this.Personal_inf
                     }
                 })
             },
-            fn3(i){
+            router_fn(i){
                 this.$router.push({
                     path:this.arr[i].router,
                     query:{
-                        Personal_inf:this.Personal_inf
+                        Personal_inf:this.Personal_inf_x
                     }
                 })
             },

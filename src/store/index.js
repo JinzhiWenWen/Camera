@@ -7,9 +7,12 @@ Vue.use(vuex)
 //创建vue
 export default new vuex.Store({
     state:{
+        uid:'5b8a5ab830c9c562f96c7f9e',
         store_candy_numer:'',//糖果数
         show_candy:'',//最多可兑换slk
         num:1,
+        Personal_inf_x:'',//个人信息
+        slk_x:'',
     },
     getters:{
         // fn(state){
@@ -25,17 +28,23 @@ export default new vuex.Store({
         },
         setTest(state,opt){
             state.num= opt
+        },
+        Wallet_fn(state,opt){
+            state.slk_x= opt
+        },
+        fn(){
+            console.log('hhhh')
         }
     },
     actions:{
         candy_actions(state,opt){//糖果总数
-            this._vm.$http.get('http://192.168.1.109:3000/v1/draw/cardList/5b8a5ab830c9c562f96c7f9e').then(res=>{
+            this._vm.$http.get('http://192.168.1.109:3000/v1/draw/cardList/'+state.state.uid).then(res=>{
                     console.log('糖果总数',res.data)
                     store.commit('candy_fn', res.data.data.candyNum);    
            })
         },
         show_candy_actions(state,opt){//显示兑换和最多可兑换
-            this._vm.$http.get('http://192.168.1.109:3000/v1/draw/change/5b8a5ab830c9c562f96c7f9e').then(res=>{
+            this._vm.$http.get('http://192.168.1.109:3000/v1/draw/change/'+state.state.uid).then(res=>{
                      console.log('最多可兑换=》',res.data)   
                      state.state.show_candy=res.data.data;
            })
@@ -43,7 +52,7 @@ export default new vuex.Store({
         exchange_actions(state,opt){//确认兑换
             console.log('我要兑换的slk数量=》',state.state.num)
             this._vm.$http.post('http://192.168.1.109:3000/v1/draw/exchange',{
-                "uid":"5b8a5ab830c9c562f96c7f9e",
+                "uid":state.state.uid,
                 "slk":state.state.num,
             }).then(res=>{
                  if(res.data.data){
@@ -53,7 +62,45 @@ export default new vuex.Store({
                      console.log('不好意思，您没有足够的糖果数字哦')
                  }                      
             })
-        }
+        },
+        Personal_inf_fn_x(state,opt){//获取个人信息
+           
+            this._vm.$http.get('http://192.168.1.109:3000/v1/users/personal/info/'+state.state.uid).then(res=>{
+                state.state.Personal_inf_x=res.data.data;
+            }) 
+        },
+        preservation_fn_x(state,opt){//保存头像
+            state.state.Personal_inf_x.avatar= opt
+            console.log('测试')
+            this._vm.$http.post('http://192.168.1.109:3000/v1/users/amend/avatar/',{
+                "uid":state.state.uid,
+                "avatar":state.state.Personal_inf_x.avatar
+            }).then(res=>{
+                console.log(res)
+                // this.$router.go(-1)
+            })
+        },
+        Nickname_fn_x(state,opt){//更换昵称
+           state.state.Personal_inf_x.name= opt
+           this._vm.$http.post('http://192.168.1.109:3000/v1/users/amend/name',{
+                  uid:state.state.uid,
+                  name:state.state.Personal_inf_x.name
+           }).then(res=>{
+               console.log(res);
+               // this.$router.go(-1)
+           })
+        },
+        Personal_profile_fn_x(state,opt){//个人简介
+            state.state.Personal_inf_x.intro= opt
+            this._vm.$http.post('http://192.168.1.109:3000/v1/users/amend/intro',{
+                uid:state.state.uid,
+                intro:state.state.Personal_inf_x.intro
+            }).then(res=>{
+                console.log(res);
+                // this.$router.go(-1)
+            })
+        },
+
     },
     modules:{
         student_add
