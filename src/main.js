@@ -18,16 +18,17 @@ import echarts from 'echarts'
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import AMap from 'vue-amap';
-import Share from 'vue-social-share'
+import Share from 'vue-social-share';
 import 'vue-social-share/dist/client.css';
-import {setStore,getStore} from '@/utill'
+import {setStore,getStore} from '@/utill';
+import $ from 'jquery'
 Vue.use(Share);
 
-Vue.prototype.$echarts = echarts 
-Vue.config.productionTip = false  //取消提示的
+Vue.prototype.$echarts = echarts ;
+Vue.config.productionTip = false ; //取消提示的
 Vue.use(ElementUI);
 Vue.use(YDUI);
-Vue.use(MintUI)
+Vue.use(MintUI);
 Vue.prototype.$http=axios;
 
 //地图
@@ -35,8 +36,8 @@ Vue.use(AMap);
 AMap.initAMapApiLoader({
   key: 'your amap key',
   plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView',
- 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 
-'AMap.CircleEditor','AMap.Geolocation','AMapUI']}); 
+ 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor',
+'AMap.CircleEditor','AMap.Geolocation','AMapUI']});
 
 // http request 拦截器
 // axios.interceptors.request.use(

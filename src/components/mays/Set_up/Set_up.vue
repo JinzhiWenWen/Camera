@@ -57,6 +57,11 @@
                         "name":"邮箱",
                         "information":"zhangyuan@qq.com",
                         "router":"/Email"
+                    },
+                    {
+                        "name":"摄像头",
+                        "information":"zhangyuan@qq.com",
+                        "router":"/camera"
                     }
                 ]
             }

@@ -13,7 +13,7 @@ import Activitys from '@/components/activitys/Activitys'
 import Basic from '@/components/Establish_activities/Basic'
 import Address from '@/components/Establish_activities/Address'
 import Title from '@/components/Establish_activities/Title'
-import Next_step from '@/components/Establish_activities/Next_step' 
+import Next_step from '@/components/Establish_activities/Next_step'
 import Next_step2 from '@/components/Establish_activities/Next_step2'
 import Next_step3 from '@/components/Establish_activities/Next_step3'
 import Next_step4 from '@/components/Establish_activities/Next_step4'
@@ -63,7 +63,7 @@ import Wallet_Detailed from '@/components/mays/wallet/Detailed'
 Vue.use(Router)
 
  const router= new Router({
- 
+
   routes:[
       {
         path:'*',
@@ -111,14 +111,14 @@ Vue.use(Router)
                   path:'/activity/activitys',
                   component:Activitys
                 }
-                
+
               ]
             },
             {
               path:'/find',
               component:Find,
               children:[
-                
+
               ]
             },
             {
@@ -229,71 +229,71 @@ Vue.use(Router)
     },
     {
       path:'/Personal_profile',
-      component:Personal_profile 
+      component:Personal_profile
     },
     {
       path:'/Wallet',
-      component:Wallet 
+      component:Wallet
     },
     {
       path:'/My_activities',
-      component:My_activities 
+      component:My_activities
     },
     {
       path:'/Set_up',
-      component:Set_up 
+      component:Set_up
     },
     {
       path:'/Warn',
-      component:Warn 
+      component:Warn
     },
     {
       path:'/Recharge',
-      component:Recharge 
+      component:Recharge
     },
     {
       path:'/Modify',
-      component:Modify 
+      component:Modify
     },
     {
       path:'/Email',
-      component:Email 
+      component:Email
     },
     {
       path:'/ID',
-      component:ID 
+      component:ID
     },
     {
       path:'/Living_thing',
-      component:Living_thing 
+      component:Living_thing
     },
     {
       path:'/Micro_blog',
-      component:Micro_blog 
+      component:Micro_blog
     },
     {
       path:'/Phone',
-      component:Phone 
+      component:Phone
     },
     {
       path:'/QQ',
-      component:QQ 
+      component:QQ
     },
     {
       path:'/WeChat',
-      component:WeChat 
+      component:WeChat
     },
     {
       path:'/Strategy',
-      component:Strategy 
+      component:Strategy
     },
     {
       path:'/Exchange',
-      component:Exchange 
+      component:Exchange
     },
     {
       path:'/Detailed',
-      component:Detailed 
+      component:Detailed
     },
     {
       path:'/Player_details',
@@ -314,6 +314,11 @@ Vue.use(Router)
     {
       path:'/Wallet_Detailed',
       component:Wallet_Detailed
+    },
+    {
+      path:'/camera',//摄像机
+      name:'Camera',
+      component:resolve=>{require(['@/components/mays/Set_up/camera'],resolve)}
     }
   ]
 })
